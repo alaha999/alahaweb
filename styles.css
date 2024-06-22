@@ -5,6 +5,31 @@ body {
     scroll-behavior: smooth;
 }
 
+/* Styles for tablets */
+@media (min-width: 300px) {
+    body {
+        font-size: 10px;
+        margin: 20px;
+    }
+}
+
+@media (min-width: 600px) {
+    body {
+        font-size: 15px;
+        margin: 20px;
+    }
+}
+
+/* Styles for desktop */
+@media (min-width: 1024px) {
+    body {
+        font-size: 16px;
+        margin: 0em 24.5em 0em;
+	padding:0;
+	scroll-behavior:smooth;
+    }
+}
+
 header {
     background-color: #686868;
     color: white;
