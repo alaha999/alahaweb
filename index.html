@@ -1,133 +1,1021 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.4">
-    <title>Arnab Laha - Physics Researcher</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arnab Laha - HEP ML</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* ── Design tokens ── */
+:root {
+  --bg:#f7f6f3; --bg2:#eeecea; --surface:#ffffff; --surface2:#f2f0ed;
+  --border:#dedad3; --border2:#c8c4bb;
+  --text:#1a1916; --text-muted:#5a5750; --text-dim:#96928a;
+  --accent:#2b4590; --accent-light:#eaeffa; --accent-mid:#4a67b5;
+  --shadow:0 2px 16px rgba(0,0,0,.07);
+  --shadow-lg:0 8px 40px rgba(0,0,0,.13);
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+  --radius:7px; --nav-h:56px; --max:920px; --fs:1rem;
+}
+[data-theme="dark"] {
+  --bg:#131210; --bg2:#1c1a18; --surface:#211f1c; --surface2:#2a2824;
+  --border:#38352f; --border2:#4a4640;
+  --text:#e8e4dc; --text-muted:#a09a90; --text-dim:#5e5a54;
+  --accent:#6b8fe0; --accent-light:#1e2a45; --accent-mid:#8aaae8;
+  --shadow:0 2px 16px rgba(0,0,0,.4);
+  --shadow-lg:0 8px 40px rgba(0,0,0,.6);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; font-size:var(--fs); }
+body {
+  font-family:var(--sans); background:var(--bg); color:var(--text);
+  font-size:1rem; line-height:1.75;
+  transition:background .25s, color .25s;
+  -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border2); border-radius:3px; }
+a { color:var(--accent); }
+
+/* ── Nav ── */
+nav {
+  position:sticky; top:0; z-index:200;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  height:var(--nav-h); display:flex; align-items:center;
+  padding:0 20px; gap:12px;
+}
+.nav-name {
+  font-family:var(--serif); font-size:1.05rem; font-weight:600;
+  color:var(--text); text-decoration:none; white-space:nowrap;
+}
+.nav-links { display:flex; align-items:center; gap:2px; list-style:none; margin-left:8px; }
+.nav-links a {
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--text-muted);
+  text-decoration:none; padding:5px 10px; border-radius:var(--radius);
+  transition:color .15s, background .15s; white-space:nowrap;
+}
+.nav-links a:hover, .nav-links a.active { color:var(--accent); background:var(--accent-light); }
+.nav-spacer { flex:1; }
+
+/* ── Nav controls (search, size, theme, hamburger) ── */
+.nav-search-wrap { position:relative; display:flex; align-items:center; }
+.nav-search-wrap svg {
+  position:absolute; left:9px; width:13px; height:13px;
+  color:var(--text-dim); pointer-events:none;
+}
+#navSearch {
+  font-family:var(--mono); font-size:.73rem;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:100px; color:var(--text);
+  padding:5px 12px 5px 28px; width:170px; outline:none;
+  transition:border-color .15s, width .25s, box-shadow .15s;
+}
+#navSearch:focus {
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+  width:220px;
+}
+#navSearch::placeholder { color:var(--text-dim); }
+#searchResults {
+  position:fixed; top:calc(var(--nav-h) + 6px); right:20px;
+  width:320px; max-height:400px; overflow-y:auto;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); box-shadow:var(--shadow-lg);
+  z-index:400; display:none;
+}
+.sr-item {
+  padding:10px 16px; border-bottom:1px solid var(--border);
+  cursor:pointer; transition:background .12s;
+}
+.sr-item:last-child { border-bottom:none; }
+.sr-item:hover { background:var(--accent-light); }
+.sr-title { font-size:.85rem; font-weight:500; color:var(--text); }
+.sr-section {
+  font-family:var(--mono); font-size:.62rem;
+  letter-spacing:.06em; text-transform:uppercase;
+  color:var(--text-dim); margin-top:2px;
+}
+.sr-empty { padding:16px; text-align:center; color:var(--text-dim); font-size:.82rem; }
+mark {
+  background:color-mix(in srgb, var(--accent) 20%, transparent);
+  color:var(--accent); border-radius:2px;
+}
+.nav-controls { display:flex; align-items:center; gap:6px; }
+.icon-btn {
+  width:32px; height:32px; border-radius:var(--radius);
+  border:1px solid var(--border); background:var(--surface2);
+  color:var(--text-muted); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .15s; flex-shrink:0;
+}
+.icon-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-light); }
+.icon-btn svg { width:15px; height:15px; }
+.size-wrap { position:relative; }
+.size-popover {
+  position:absolute; top:calc(100% + 8px); right:0;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); box-shadow:var(--shadow-lg);
+  padding:14px 16px; min-width:200px;
+  opacity:0; pointer-events:none; transform:translateY(-6px);
+  transition:opacity .18s, transform .18s; z-index:300;
+}
+.size-popover.open { opacity:1; pointer-events:all; transform:translateY(0); }
+.size-label {
+  font-family:var(--mono); font-size:.65rem; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--text-dim);
+  margin-bottom:10px; display:flex; justify-content:space-between;
+}
+#fontSlider { width:100%; accent-color:var(--accent); cursor:pointer; height:3px; }
+.size-reset {
+  font-family:var(--mono); font-size:.65rem; color:var(--text-dim);
+  cursor:pointer; background:none; border:none;
+  margin-top:8px; padding:0; transition:color .15s;
+  text-decoration:underline; text-underline-offset:2px;
+}
+.size-reset:hover { color:var(--accent); }
+.nav-hamburger {
+  display:none; flex-direction:column; gap:4px;
+  cursor:pointer; padding:6px; border:none; background:none; color:var(--text-muted);
+}
+.nav-hamburger span { display:block; width:20px; height:2px; background:currentColor; border-radius:2px; }
+.nav-drawer {
+  display:none; position:fixed; top:var(--nav-h); left:0; right:0;
+  background:var(--surface); border-bottom:1px solid var(--border);
+  padding:12px 20px 16px; z-index:190;
+  flex-direction:column; gap:4px; box-shadow:var(--shadow-lg);
+}
+.nav-drawer.open { display:flex; }
+.nav-drawer a {
+  font-family:var(--mono); font-size:.8rem; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--text-muted);
+  text-decoration:none; padding:8px 10px; border-radius:var(--radius);
+  transition:color .15s, background .15s;
+}
+.nav-drawer a:hover { color:var(--accent); background:var(--accent-light); }
+
+/* ── Pill badges ── */
+.pill {
+  display:inline-flex; align-items:center; gap:5px;
+  font-family:var(--mono); font-size:.71rem; letter-spacing:.03em;
+  padding:6px 13px; border-radius:100px;
+  border:1px solid var(--border2); color:var(--text-muted);
+  text-decoration:none; background:var(--surface);
+  transition:all .15s; white-space:nowrap; cursor:pointer;
+}
+.pill:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-light); }
+.pill svg { width:11px; height:11px; flex-shrink:0; }
+.pill.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+.pill.primary:hover { opacity:.88; }
+
+/* ── Page / Section layout ── */
+.page { max-width:var(--max); margin:0 auto; padding:0 18px; }
+.section-divider { max-width:var(--max); margin:0 auto; padding:0 18px; border:none; border-top:1px solid var(--border); }
+section { max-width:var(--max); margin:0 auto; padding:42px 18px; }
+.section-header { display:flex; align-items:baseline; gap:14px; margin-bottom:28px; }
+.section-num {
+  font-family:var(--mono); font-size:.65rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--text-dim);
+}
+.section-title { font-family:var(--serif); font-size:1.5rem; font-weight:400; color:var(--text); }
+.section-line { flex:1; height:1px; background:var(--border); }
+
+/* ── Footer ── */
+footer { background:var(--bg2); border-top:1px solid var(--border); padding:20px 18px; margin-top:20px; }
+.footer-inner {
+  max-width:var(--max); margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:10px;
+}
+.footer-copy { font-family:var(--mono); font-size:.67rem; color:var(--text-dim); letter-spacing:.04em; }
+.footer-links { display:flex; gap:14px; }
+.footer-links a { font-family:var(--mono); font-size:.67rem; color:var(--text-dim); text-decoration:none; transition:color .15s; }
+.footer-links a:hover { color:var(--accent); }
+
+/* ── Lightbox ── */
+#lightbox {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.9); backdrop-filter:blur(6px);
+  z-index:1000; align-items:center; justify-content:center;
+  animation:lb-in .18s ease;
+}
+#lightbox.open { display:flex; }
+@keyframes lb-in { from{opacity:0;} to{opacity:1;} }
+.lb-inner {
+  position:relative; max-width:90vw; max-height:88vh;
+  display:flex; flex-direction:column; align-items:center; gap:16px;
+}
+.lb-inner img {
+  max-width:100%; max-height:74vh; object-fit:contain;
+  border-radius:6px; box-shadow:0 20px 70px rgba(0,0,0,.7);
+  animation:lb-pop .2s cubic-bezier(.2,.8,.3,1.1);
+}
+@keyframes lb-pop { from{transform:scale(.93);opacity:0;} to{transform:scale(1);opacity:1;} }
+.lb-caption {
+  font-family:var(--mono); font-size:.78rem;
+  color:rgba(255,255,255,.75); text-align:center;
+  max-width:560px; line-height:1.5;
+}
+.lb-close {
+  position:fixed; top:16px; right:20px; width:36px; height:36px;
+  border-radius:50%; border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.08); color:rgba(255,255,255,.8);
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; transition:all .15s; z-index:10;
+}
+.lb-close:hover { background:rgba(255,255,255,.18); color:#fff; }
+.lb-nav {
+  position:fixed; top:50%; transform:translateY(-50%);
+  width:44px; height:44px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08); color:rgba(255,255,255,.8);
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem; transition:all .15s;
+}
+.lb-nav:hover { background:rgba(255,255,255,.18); }
+.lb-nav.prev { left:16px; } .lb-nav.next { right:16px; }
+.lb-counter {
+  position:fixed; bottom:16px;
+  font-family:var(--mono); font-size:.68rem;
+  color:rgba(255,255,255,.4); letter-spacing:.1em;
+}
+
+/* ── Link / PDF modal ── */
+#linkModal {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.7); backdrop-filter:blur(6px);
+  z-index:900; align-items:center; justify-content:center;
+  animation:lb-in .18s ease;
+}
+#linkModal.open { display:flex; }
+.lm-box {
+  width:90vw; max-width:1050px; height:88vh;
+  background:var(--surface); border-radius:10px;
+  display:flex; flex-direction:column;
+  overflow:hidden; box-shadow:var(--shadow-lg);
+  animation:lb-pop .2s cubic-bezier(.2,.8,.3,1.1);
+}
+.lm-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 16px; border-bottom:1px solid var(--border);
+  background:var(--surface2); flex-shrink:0;
+}
+.lm-title {
+  font-family:var(--mono); font-size:.73rem; color:var(--text-muted);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  max-width:calc(100% - 110px);
+}
+.lm-actions { display:flex; gap:8px; flex-shrink:0; }
+.lm-btn {
+  font-family:var(--mono); font-size:.66rem; letter-spacing:.04em;
+  padding:4px 10px; border-radius:var(--radius);
+  border:1px solid var(--border2); background:var(--surface);
+  color:var(--text-muted); cursor:pointer; text-decoration:none;
+  display:inline-flex; align-items:center; gap:5px; transition:all .15s;
+}
+.lm-btn:hover { border-color:var(--accent); color:var(--accent); }
+.lm-btn.close-btn:hover { border-color:#e55; color:#e55; }
+#modalFrame { flex:1; border:none; display:block; }
+#modalFallback {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:14px; padding:40px; text-align:center;
+}
+#modalFallback p { font-size:.9rem; color:var(--text-muted); }
+
+/* ── Search highlight ── */
+.search-highlight {
+  outline:2px solid var(--accent); outline-offset:4px;
+  border-radius:3px; animation:hl-pulse 1.5s ease forwards;
+}
+@keyframes hl-pulse { 0%,100%{outline-color:var(--accent);} 50%{outline-color:transparent;} }
+
+/* ── Animations ── */
+@keyframes fade-up {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width:760px) {
+  .nav-links    { display:none; }
+  .nav-hamburger{ display:flex; }
+  #navSearch    { width:110px; }
+  #navSearch:focus { width:150px; }
+  section       { padding:30px 14px; }
+  .page         { padding:0 14px; }
+  .lm-box       { width:98vw; height:92vh; }
+  .lb-nav       { display:none; }
+}
+</style>
 </head>
-
 <body>
-    <header>
-      <h1>Arnab Laha</h1><h3>Graduate Student, IISER Pune</h3>
-      <nav>
-            <ul>
-              <li><a href="#home">Home</a></li>
-              <!--<li><a href="#about">About</a></li>-->
-              <li><a href="#research">Research</a></li>
-              <li><a href="#publications">Publications</a></li>
-	      <li><a href="#teaching">Teaching Assistantship</a></li>
-              <li><a href="#contact">Contact</a></li>
-	      <a style="color:white" href="gallery.html">Gallery</a>
-            </ul>
-      </nav>
-    </header>
-    
-    <section id="home">
-        <h2>Hello!</h2>
-        <p>I'm a graduate student at Indian Institute of Science Education and Research, Pune, India. I'm working with <a href="http://sites.iiserpune.ac.in/~sdube/">Dr. Sourabh Dube</a> for my Ph.D. in Experimental High Energy Physics. My work focuses on exploring beyond the standard model (BSM) physics signatures with the help of machine learning techniques using the high energetic proton-proton collisions recorded at CMS experiment and dedicated CMS tracking software improvements for high luminosity phase of LHC.<br><br>
-	  Apart from doing research, I am an amateur photographer. You may find a glimpse of it in my <a href= "https://alaha999.github.io/OverwrittenMemories/index.html">blogs</a>. My enthusiasm for riding a bike has grown a lot in recent years. I often go to the western ghats near Pune or the city to experience the local culture, food and meeting people. I follow and play various sports. I'm an Argentina and Barcelona fan.<br><br>
-	  
-	  Please find my CV here: <a href = "images/CV.pdf">CV</a> <br> 
-	  
-	</p>
-	<div class="row">
-	  <div class="column">
-	    <img class="img_img" src="images/White_emt.png", alt="" width="550" height="333">
-	    <figcaption> CMS recorded event with an electron, muon and tau lepton (used in our analysis)</figcaption>
-	  </div>
-	  <div class="column">
-	    <img class="img_img" src="images/CMS_tracker.jpg", alt="" width="550" height="333">
-	    <figcaption>CMS silicon tracker</figcaption>
-	  </div>
-	</div>
+<style>
+/* ── Hero layout ── */
+.hero-wrap {
+  max-width:var(--max); margin:0 auto; padding:50px 18px 38px;
+  display:grid; grid-template-columns:1fr 190px;
+  gap:40px; align-items:start; animation:fade-up .5s ease both;
+}
+.hero-eyebrow {
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent-mid);
+  margin-bottom:12px; display:flex; align-items:center; gap:10px;
+}
+.hero-eyebrow::before { content:''; display:block; width:24px; height:1px; background:var(--accent-mid); }
+.hero-name {
+  font-family:var(--serif); font-size:2.6rem; font-weight:400;
+  line-height:1.15; color:var(--text); margin-bottom:6px; letter-spacing:-.01em;
+}
+.hero-role { font-size:.97rem; font-weight:300; color:var(--text-muted); margin-bottom:20px; }
+.hero-role strong { font-weight:500; color:var(--text); }
+.hero-bio { font-size:.95rem; color:var(--text-muted); line-height:1.8; max-width:540px; }
+.hero-bio a { color:var(--accent); text-decoration:none; border-bottom:1px solid transparent; transition:border-color .15s; }
+.hero-bio a:hover { border-color:var(--accent); }
+.hero-links { display:flex; flex-wrap:wrap; gap:7px; margin-top:22px; }
 
-	<div class="row">
-	  <div class="column">
-	    <img class="img_img" src="images/run3_13.6TeV_1.png", alt="" width="550" height="333">
-	    <figcaption>First pp collision at 13.6 TeV (2022) </figcaption>
-	  </div>
-	  <div class="column">
-	    <img class="img_img" src="images/ParticleTimelineATLAS.png", alt="" width="550" height="333">
-	    <figcaption>Discovery timeline of particles (credit: ATLAS)</figcaption>
-	  </div>
-	</div>
-    </section>
-     
-    <section id="research">
-      <h2>Research</h2>
-      <p style="color:#FF0000";>Search with physics dataset</p>
-      <p> Primarily, I search for beyond the standard model (BSM) phenomena in lepton final states. I was a part of the team searching for BSM phenomena in multilepton final states in a model independent way as well as targeting specific BSM models such as Vector-like leptons, seesaw or lepto-quark using machine learning (ML). Currently, I am expanding the search including more hadronic activity in the event and less leptonic activity to target low mass VLLs. I use ML techniques to enhance the sensitivity of the search including Boosted Decision Tree (BDT) or Deep Neural Network(DNN) using as a classifier.</p>
+/* ── Profile photo ── */
+.photo-frame {
+  width:190px; height:190px; border-radius:10px;
+  overflow:hidden; background:var(--bg2); border:1px solid var(--border);
+  cursor:pointer; transition:box-shadow .2s;
+}
+.photo-frame:hover { box-shadow:var(--shadow-lg); }
+.photo-frame img { width:100%; height:100%; object-fit:cover; display:block; }
+.photo-placeholder {
+  width:100%; height:100%; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:10px; color:var(--text-dim);
+}
+.photo-placeholder svg { width:34px; height:34px; opacity:.45; }
+.photo-placeholder span {
+  font-family:var(--mono); font-size:.62rem; letter-spacing:.06em;
+  text-transform:uppercase; text-align:center; line-height:1.5;
+  opacity:.55; padding:0 14px;
+}
+.photo-caption {
+  margin-top:10px; font-family:var(--mono); font-size:.63rem;
+  color:var(--text-dim); text-align:center; letter-spacing:.04em;
+}
 
-      <p style="color:#FF0000">Tracking Software at CMS</p>
-      <p>I also work on the implementation of the phase 2 tracker geometry and phase 2 tracking in CMS Fast Simulation package for High Luminosity-LHC upgrade to facilitate the faster production of Monte Carlo(MC) events generation at HL-LHC.</p>
-      
-      <p style="color:#FF0000">Learning physics using latent space representation of HEP dataset</p>
-      <ul>
-	<li>Investigating the hidden patterns in multidimensional data using PCA, UMAP, and Autoencoder
-	  in the context of lepton classification using CERN Open Data. Developing tools using these
-	  techniques for classification tasks for statistically limited and asymmetric datasets.</li><p></p>
+/* ── Physics image strip ── */
+.physics-strip { max-width:var(--max); margin:0 auto; padding:0 18px 36px; }
+.physics-grid  { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.gallery-thumb {
+  border-radius:6px; overflow:hidden; background:var(--bg2);
+  border:1px solid var(--border); aspect-ratio:4/3;
+  cursor:pointer; position:relative; transition:box-shadow .2s, transform .2s;
+}
+.gallery-thumb:hover { box-shadow:var(--shadow-lg); transform:translateY(-2px); }
+.gallery-thumb img   { width:100%; height:100%; object-fit:cover; display:block; }
+.thumb-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(transparent 50%, rgba(0,0,0,.55));
+  opacity:0; transition:opacity .2s;
+  display:flex; align-items:flex-end; padding:8px;
+}
+.gallery-thumb:hover .thumb-overlay { opacity:1; }
+.thumb-caption-preview {
+  font-family:var(--mono); font-size:.58rem;
+  color:rgba(255,255,255,.9); letter-spacing:.03em; line-height:1.4;
+}
+.gallery-note {
+  font-family:var(--mono); font-size:.63rem; color:var(--text-dim);
+  text-align:center; margin-top:8px; letter-spacing:.03em;
+}
 
-	<li> Using Generative Adversarial Network (GAN) and dimension reduction techniques to speed up training time and minimise the computing resources. I developed this in the context of simulating events where W boson is produced with one or more jets and with Z boson at LHC. This results into one master thesis and a funded HSF project. </li>
-      </ul>
+/* ── Research cards ── */
+.research-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.rc {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:8px; padding:20px 22px; transition:border-color .2s, box-shadow .2s;
+}
+.rc:hover {
+  border-color:var(--accent-mid);
+  box-shadow:0 4px 20px color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.rc-tag {
+  font-family:var(--mono); font-size:.63rem; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--accent-mid);
+  margin-bottom:9px; display:flex; align-items:center; gap:6px;
+}
+.rc-tag::before { content:''; display:block; width:6px; height:6px; border-radius:50%; background:var(--accent-mid); flex-shrink:0; }
+.rc-title { font-size:.9rem; font-weight:500; color:var(--text); margin-bottom:8px; line-height:1.4; }
+.rc-body  { font-size:.85rem; color:var(--text-muted); line-height:1.7; }
 
+/* ── Publications ── */
+.pub-list { display:flex; flex-direction:column; }
+.pub-item {
+  padding:18px 0; border-bottom:1px solid var(--border);
+  display:grid; grid-template-columns:44px 1fr; gap:16px; align-items:start;
+}
+.pub-item:first-child { padding-top:0; }
+.pub-year { font-family:var(--mono); font-size:.7rem; color:var(--text-dim); letter-spacing:.05em; padding-top:3px; }
+.pub-title { font-size:.9rem; font-weight:500; color:var(--text); line-height:1.45; margin-bottom:4px; }
+.pub-title a { color:inherit; text-decoration:none; border-bottom:1px solid var(--border2); transition:border-color .15s, color .15s; }
+.pub-title a:hover { color:var(--accent); border-color:var(--accent); }
+.pub-journal { font-size:.8rem; color:var(--text-muted); font-style:italic; }
+.pub-badge {
+  display:inline-block; font-family:var(--mono); font-size:.6rem;
+  letter-spacing:.05em; padding:2px 7px; border-radius:3px;
+  background:var(--accent-light); color:var(--accent);
+  border:1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  margin-left:8px; vertical-align:middle; font-style:normal;
+}
+.pub-more { margin-top:16px; font-family:var(--mono); font-size:.7rem; }
+.pub-more a { color:var(--text-dim); text-decoration:none; display:inline-flex; align-items:center; gap:4px; }
+.pub-more a:hover { color:var(--accent); }
 
-      <p style="color:#FF0000"> B-tagging contact position in EXOTICA group</p>
-      <p>Reviewing the usage of heavy flavor tagging in the CMS EXOTICA analyses and helping analyzers
-	with the implementation of b-tagging tools if required in liaison with CMS b-tagging object group
-	(reviewed more than 40 analyses).</p>
-      
-    </section>
-    
-     
-    <section id="publications">
-        <h2>Publications</h2>
-        <p>Here are some of the selected publications:</p>
-	<p> Constraining the Vector-like electron,muon and tau models reinterpreting ATLAS <span>&#8730;</span>s = 8 TeV multilepton search. <a href="">Manuscript in preparation</a></p>
-	
-	<p>Review of searches for vector-like quarks, vector-like leptons, and heavy neutral leptons in proton-proton collisions at  <span>&#8730;</span>s = 13 TeV at the CMS experiment. <a href="https://arxiv.org/abs/2405.17605">CMS-EXO-23-006</a></p>
-	<p>Search for dilepton resonances from decays of (pseudo)scalar bosons produced in association with
-	  a massive vector boson or top quark anti-top quark pair at √s = 13 TeV. The CMS Collaboration,<a href="http://cds.cern.ch/record/2815307?ln=en}{CMS-PAS-EXO-21-018">CMS-PAS-EXO-21-018</a></p>
-	<p>Inclusive nonresonant multilepton probes of new phenomena at <span>&#8730;</span>s = 13 TeV. The CMS Collaboration, <a href= "https://doi.org/10.1103/PhysRevD.105.112007">Phys.Rev. D 105, 112007 (2022))</a></p>
-	<!--\item Search for dilepton resonances from decays of (pseudo)scalar bosons produced in association with a massive vector boson or top quark anti-top quark pair at $\sqrt{s} = 13$ TeV. The CMS Collaboration, \href{http://cds.cern.ch/record/2815307?ln=en}{CMS-PAS-EXO-21-018}\vspace{1mm}\\-->
-	<p>See the full publication list in <a href ="https://inspirehep.net/authors/1714683?ui-citation-summary=true"></a>iNSPIRE HEP</p>
-    </section>
+/* ── Teaching ── */
+.teaching-list { display:flex; flex-direction:column; }
+.ti {
+  padding:13px 0; border-bottom:1px solid var(--border);
+  display:grid; grid-template-columns:1fr auto; gap:14px; align-items:baseline;
+}
+.ti:first-child { padding-top:0; }
+.ti-course { font-size:.9rem; font-weight:500; color:var(--text); }
+.ti-note   { font-weight:300; color:var(--text-muted); }
+.ti-role   { font-size:.82rem; color:var(--text-muted); margin-top:2px; }
+.ti-role a { color:var(--accent); text-decoration:none; }
+.ti-term   { font-family:var(--mono); font-size:.68rem; color:var(--text-dim); letter-spacing:.04em; white-space:nowrap; }
 
-     	
-    <section id="teaching">
-      <h2>Teaching assistantship</h2>
-      <p>Here are some of the courses I took as TA:</p>
-      Machine Learning and its physics application(PH6232) <a href="https://alaha999.github.io/">github</a> | <a style="color:#FF0000">Spring 2023</a> <br>
-      (Partially taught with Sourabh and code maintainer)<br><br>
-      Lectures on Feynman diagrams (EHEP Mini-Course) |   <a style="color:#FF0000">July 2022</a> <br><br>
-      World of Physics : Quantum Mechanics(PHY 202) | <a style="color:#FF0000">Spring 2020</a> <br><br>
-      Physics lab instructor in INSPIRE Camp held at IISER Pune | <a style="color:#FF0000"> Jan 2020</a><br><br>
-      BSMS second year experimental lab(PHY 221) | <a style="color:#FF0000">Fall 2019</a><br><br>
-      BSMS first year experimental lab(PHY 121) | <a style="color:#FF0000">Spring 2019</a>
-    </section>
-    
-     
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Feel free to reach out to me. I'm always up for a conversation. Email is preferred as I rarely check my LinkedIn or twitter.</p>
-        <p>Email: <a href="mailto:arnab.laha@cern.ch">arnab.laha@cern.ch</a> or <a href="mailto:laha.arnab@students.iiserpune.ac.in">laha.arnab@students.iiserpune.ac.in</a></p>
-        <p style="color:#FF0000">Office: A365  <br>
-	  Main Building, Physics wing <br>
-	  Indian Institute of Science Education and Research, Pune<br>
-	  Dr. Homi Bhabha Road, 411008, Pune, Maharastra, India
-	</p>
-    </section>
-    
-    <footer>
-      <p>&copy; 2024 Arnab Laha. All rights reserved.<br><br>
-	<a href="https://github.com/alaha999"><i class="fa fa-github" style="font-size:40px;color:white" ></i></a>&emsp; &emsp;
-	<a href="https://www.linkedin.com/in/arnab-laha-39844ba0/"><i class="fa fa-linkedin" style="font-size:40px;color:white"></i></a>&emsp; &emsp;
-	<a href="https://www.facebook.com/arn.laha/"><i class="fa fa-facebook" style="font-size:40px;color:white" ></i></a>&emsp; &emsp;
-	<a href="http://sites.iiserpune.ac.in/~sdube/People.html"><i class="fa fa-link" style="font-size:40px;color:white" aria-hidden="true"></i><span></span></a>
-      </p>
-    </footer>
+/* ── Contact ── */
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:start; }
+.contact-block h3 {
+  font-family:var(--mono); font-size:.67rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--text-dim); margin-bottom:12px;
+}
+.email-list   { display:flex; flex-direction:column; gap:7px; margin-bottom:20px; }
+.email-link {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--mono); font-size:.8rem; color:var(--text);
+  text-decoration:none; padding:9px 13px;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); transition:border-color .15s, background .15s;
+}
+.email-link:hover { border-color:var(--accent); background:var(--accent-light); color:var(--accent); }
+.email-link svg  { width:13px; height:13px; color:var(--text-dim); flex-shrink:0; }
+.email-link:hover svg { color:var(--accent); }
+.social-row   { display:flex; flex-wrap:wrap; gap:7px; }
+.address-block { font-size:.87rem; color:var(--text-muted); line-height:1.85; }
+.address-block strong { color:var(--text); font-weight:500; }
 
-    <script src="script.js"></script>
+/* ── Responsive overrides ── */
+@media (max-width:760px) {
+  .hero-wrap { grid-template-columns:1fr; padding:30px 14px 24px; }
+  .hero-photo { order:-1; display:flex; flex-direction:column; align-items:flex-start; }
+  .photo-frame { width:100px; height:100px; }
+  .hero-name  { font-size:2rem; }
+  .research-grid { grid-template-columns:1fr; }
+  .contact-grid  { grid-template-columns:1fr; }
+  .physics-grid  { grid-template-columns:repeat(2,1fr); }
+  .ti { grid-template-columns:1fr; gap:2px; }
+  .pub-item { grid-template-columns:36px 1fr; }
+}
+</style>
+<nav>
+  <a class="nav-name" href="index.html">Arnab Laha</a>
+  <ul class="nav-links">
+    <li><a href="index.html#research" class="active">Research</a></li>
+    <li><a href="index.html#publications" class="active">Publications</a></li>
+    <li><a href="index.html#teaching" class="active">Teaching</a></li>
+    <li><a href="index.html#contact" class="active">Contact</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="somefun.html">Some Fun</a></li>
+  </ul>
+
+  <div class="nav-spacer"></div>
+
+  <!-- Search -->
+  <div class="nav-search-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input id="navSearch" type="text" placeholder="Search…"
+           autocomplete="off" spellcheck="false">
+  </div>
+  <div id="searchResults"></div>
+
+  <!-- Controls cluster -->
+  <div class="nav-controls">
+
+    <!-- Font-size popover -->
+    <div class="size-wrap">
+      <button class="icon-btn" id="sizeBtn" title="Text size" aria-label="Adjust text size">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+        </svg>
+      </button>
+      <div class="size-popover" id="sizePopover">
+        <div class="size-label">
+          <span>Text Size</span><span id="sizeVal">100%</span>
+        </div>
+        <input type="range" id="fontSlider" min="100" max="140" step="5" value="100">
+        <br>
+        <button class="size-reset" id="sizeReset">Reset to default</button>
+      </div>
+    </div>
+
+    <!-- Dark-mode toggle -->
+    <button class="icon-btn" id="themeBtn" title="Toggle dark mode" aria-label="Toggle dark mode">
+      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+
+  </div><!-- /.nav-controls -->
+
+  <!-- Mobile hamburger -->
+  <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-drawer" id="navDrawer">
+  <a href="index.html#research" onclick="closeDrawer()">Research</a>
+  <a href="index.html#publications" onclick="closeDrawer()">Publications</a>
+  <a href="index.html#teaching" onclick="closeDrawer()">Teaching</a>
+  <a href="index.html#contact" onclick="closeDrawer()">Contact</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="somefun.html">Some Fun</a>
+</div>
+
+<!-- HERO -->
+<div class="hero-wrap" id="home">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Experimental High Energy Physics | ML | Data Science</div>
+    <h1 class="hero-name">Arnab Laha</h1>
+    <p class="hero-role"><strong>Postdoctoral Researcher</strong> · University of the Witwatersrand, Johannesburg, SA &nbsp;·&nbsp; ATLAS Collaboration, CERN</p>
+    <p class="hero-bio" data-searchable="about intro bio">I am currently working as a postdoctoral researcher at the University of the Witwatersrand,
+Johannesburg, South Africa. I work on the ATLAS experiment at CERN. My current research
+focuses on Dark Sector searches and the Calorimeter Fast Simulation pipeline for the ATLAS detector.
+<br><br>
+I obtained my Ph.D. in Experimental High Energy Physics from IISER Pune, India, under the supervision
+of <a href="http://sites.iiserpune.ac.in/~sdube/" target="_blank">Prof. Sourabh Dube</a>. My doctoral
+research focused on searches for physics beyond the Standard Model (BSM) in
+multilepton final states using at the CMS experiment at CERN.
+In addition to physics analyses, I contributed to the development and improvement
+of CMS tracking software in preparation for the High-Luminosity LHC upgrade.
+<br><br>
+Outside physics, I am an amateur photographer, a keen motorbike rider, and a
+passionate football fan of Argentina and Barcelona.
+</p>
+    <div class="hero-links"><a class="pill primary" href="#" onclick="openLink('images/CV.pdf','Curriculum Vitae');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Curriculum Vitae</a>
+<a class="pill" href="#" onclick="openLink('https://inspirehep.net/authors/1714683','iNSPIRE HEP');return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>iNSPIRE HEP</a>
+<a class="pill" href="https://github.com/alaha999" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>GitHub</a>
+<a class="pill" href="https://orcid.org/0000-0001-9440-7028" target="_blank">ORCID</a>
+<a class="pill" href="https://gitlab.cern.ch/alaha" target="_blank">GitLab</a>
+<a class="pill" href="https://drive.google.com/file/d/1AzsnFCbZDmB5UJWRlkYxkb5aXdmppwjs/view?usp=sharing" target="_blank">PhD Thesis</a></div>
+  </div>
+  <div class="hero-photo">
+<div class="photo-frame" onclick="openLightbox('images/ProfilePic.jpg','Arnab Laha')">
+  <!-- To add your photo replace this block with:
+       <img src="images/ProfilePic.jpg" alt="Arnab Laha"> -->
+  <div class="photo-placeholder">
+       <img src="images/ProfilePic.jpg" alt="Arnab Laha">
+  </div>
+</div>
+<p class="photo-caption">Arnab Laha · Wits University</p>
+  </div>
+</div>
+
+<!-- PHYSICS STRIP -->
+<div class="physics-strip">
+  <div class="physics-grid" id="physicsGallery">
+    <div class="gallery-thumb" data-src="images/White_emt.png" data-caption="CMS recorded event with electron, muon and tau lepton (used in our analysis)">
+  <img src="images/White_emt.png" alt="CMS: e, μ, τ event" loading="lazy" onerror="this.parentElement.style.display='none'">
+  <div class="thumb-overlay"><span class="thumb-caption-preview">CMS: e, μ, τ event</span></div>
+</div>
+    <div class="gallery-thumb" data-src="images/CMS_tracker.jpg" data-caption="CMS Silicon Tracker — the largest silicon detector ever built">
+  <img src="images/CMS_tracker.jpg" alt="CMS Silicon Tracker" loading="lazy" onerror="this.parentElement.style.display='none'">
+  <div class="thumb-overlay"><span class="thumb-caption-preview">CMS Silicon Tracker</span></div>
+</div>
+    <div class="gallery-thumb" data-src="images/run3_13.6TeV_1.png" data-caption="First proton–proton collision at √s = 13.6 TeV recorded by CMS (2022)">
+  <img src="images/run3_13.6TeV_1.png" alt="First pp @ 13.6 TeV" loading="lazy" onerror="this.parentElement.style.display='none'">
+  <div class="thumb-overlay"><span class="thumb-caption-preview">First pp @ 13.6 TeV</span></div>
+</div>
+    <div class="gallery-thumb" data-src="images/ParticleTimelineATLAS.png" data-caption="Discovery timeline of fundamental particles — credit: ATLAS Collaboration">
+  <img src="images/ParticleTimelineATLAS.png" alt="Particle timeline (ATLAS)" loading="lazy" onerror="this.parentElement.style.display='none'">
+  <div class="thumb-overlay"><span class="thumb-caption-preview">Particle timeline (ATLAS)</span></div>
+</div>
+  </div>
+  <p class="gallery-note">Click any image to enlarge</p>
+</div>
+
+<hr class="section-divider">
+<section id="research">
+<div class="section-header"><span class="section-num">01</span><h2 class="section-title">Research</h2><div class="section-line"></div></div>
+  <div class="research-grid">
+    <div class="rc" data-searchable="BSM multilepton VLLs seesaw leptoquark ML Dark Sector">
+  <div class="rc-tag">BSM Search</div>
+  <div class="rc-title">Search for Beyond Standard Model Signatures</div>
+  <p class="rc-body">Searches for BSM phenomena in multilepton final states, model-independently
+and/or targeting specific models: Vector-like leptons, seesaw mechanisms, and
+leptoquarks. Machine learning to enhance search sensitivity. Currently working
+on searches exploring Dark Sector models in the ATLAS experiment. Designing
+a cut-based strategy for emerging jets search using Full Run 3 ATLAS dataset.</p>
+</div>
+    <div class="rc" data-searchable="phase 2 tracker CMS fast simulation HL-LHC Monte Carlo">
+  <div class="rc-tag">CMS Simulation · HL-LHC</div>
+  <div class="rc-title">Phase 2 Tracking in CMS Fast Simulation</div>
+  <p class="rc-body">Implementation of the Phase 2 tracker geometry and tracking in the CMS
+Fast Simulation package for the HL-LHC upgrade, enabling faster Monte Carlo
+event generation for HL-LHC physics studies.</p>
+</div>
+    <div class="rc" data-searchable="HL-LHC ATLAS Fast Calorimetry MC Simulation LLP">
+  <div class="rc-tag">ATLAS Simulation · HL-LHC</div>
+  <div class="rc-title">Fast Calorimetry for Long Lived Particles</div>
+  <p class="rc-body">Working on ATLAS Fast Calorimeter simulation software (AF3) to implement
+fast reconstruction of long-lived particles in the ATLAS calorimeter.</p>
+</div>
+    <div class="rc" data-searchable="PCA UMAP autoencoder GAN latent space lepton classification">
+  <div class="rc-tag">Machine Learning</div>
+  <div class="rc-title">Latent Space Representation of HEP Data</div>
+  <p class="rc-body">Investigating hidden patterns in multidimensional HEP data using PCA, UMAP,
+and Autoencoders for lepton classification on CERN Open Data. Also uses GANs
+to speed up W+jets and Z+jets event simulation at LHC.</p>
+</div>
+    <div class="rc" data-searchable="b-tagging EXOTICA heavy flavor CMS service">
+  <div class="rc-tag">CMS Service Work</div>
+  <div class="rc-title">B-Tagging Contact, CMS EXOTICA Group</div>
+  <p class="rc-body">Reviewing heavy flavor tagging usage in CMS EXOTICA analyses and supporting
+analyzers with b-tagging tool implementation in liaison with the CMS b-tagging
+object group. Over 40 analyses reviewed.</p>
+</div>
+  </div>
+</section>
+
+<hr class="section-divider">
+<section id="publications">
+<div class="section-header"><span class="section-num">02</span><h2 class="section-title">Publications</h2><div class="section-line"></div></div>
+  <div class="pub-list">
+    <div class="pub-item" data-searchable="Vector-like electron muon CMS Run 2 Run 3">
+  <span class="pub-year">Ongoing</span>
+  <div>
+    <div class="pub-title">Search for first- and second-generation VLLs using full Run 2 + partial Run 3 data at CMS</div>
+    <div class="pub-journal">Review stage in collaboration. I participated in the working phase of this analysis with two main analysts from IISER group.</div>
+  </div>
+</div>
+    <div class="pub-item" data-searchable="Vector-like electron muon tau ATLAS 8 TeV">
+  <span class="pub-year">prep</span>
+  <div>
+    <div class="pub-title">Constraining Vector-like electron, muon and tau models reinterpreting ATLAS √s = 8 TeV multilepton search</div>
+    <div class="pub-journal">Manuscript in preparation</div>
+  </div>
+</div>
+    <div class="pub-item" data-searchable="vector-like quarks leptons heavy neutral 13 TeV EXO-23-006">
+  <span class="pub-year">2024</span>
+  <div>
+    <div class="pub-title"><a href="#" onclick="openLink('https://arxiv.org/abs/2405.17605','Review of searches for vector-like quarks, vector-like lepto');return false;">Review of searches for vector-like quarks, vector-like leptons, and heavy neutral leptons in pp collisions at √s = 13 TeV at CMS</a><span class="pub-badge">CMS-EXO-23-006</span></div>
+    <div class="pub-journal">The CMS Collaboration</div>
+  </div>
+</div>
+    <div class="pub-item" data-searchable="dilepton resonances pseudoscalar top quark 13 TeV EXO-21-018">
+  <span class="pub-year">2022</span>
+  <div>
+    <div class="pub-title"><a href="#" onclick="openLink('http://cds.cern.ch/record/2815307','Search for dilepton resonances from decays of (pseudo)scalar');return false;">Search for dilepton resonances from decays of (pseudo)scalar bosons produced in association with a massive vector boson or tt̄ pair at √s = 13 TeV</a><span class="pub-badge">CMS-PAS-EXO-21-018</span></div>
+    <div class="pub-journal">The CMS Collaboration</div>
+  </div>
+</div>
+    <div class="pub-item" data-searchable="nonresonant multilepton new phenomena Physical Review D">
+  <span class="pub-year">2022</span>
+  <div>
+    <div class="pub-title"><a href="#" onclick="openLink('https://doi.org/10.1103/PhysRevD.105.112007','Inclusive nonresonant multilepton probes of new phenomena at');return false;">Inclusive nonresonant multilepton probes of new phenomena at √s = 13 TeV</a><span class="pub-badge">Phys. Rev. D 105, 112007</span></div>
+    <div class="pub-journal">The CMS Collaboration · Physical Review D</div>
+  </div>
+</div>
+  </div>
+  <p class="pub-more"><a href="#" onclick="openLink('https://inspirehep.net/authors/1714683','iNSPIRE HEP — Arnab Laha');return false;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Full publication list on iNSPIRE HEP</a></p>
+</section>
+
+<hr class="section-divider">
+<section id="teaching">
+<div class="section-header"><span class="section-num">03</span><h2 class="section-title">Teaching &amp; Outreach</h2><div class="section-line"></div></div>
+  <div class="teaching-list">
+    <div class="ti" data-searchable="machine learning physics PH6232">
+  <div>
+    <div class="ti-course">Machine Learning and its Physics Application <span class="ti-note">(PH6232)</span></div>
+    <div class="ti-role">Teaching Assistant (co-instructor) · <a class="" href="#" onclick="openLink('https://alaha999.github.io/','Course GitHub');return false;">Course GitHub</a></div>
+  </div>
+  <span class="ti-term">Spring 2023</span>
+</div>
+    <div class="ti" data-searchable="Feynman diagrams EHEP mini course">
+  <div>
+    <div class="ti-course">Lectures on Feynman Diagrams</div>
+    <div class="ti-role">EHEP Mini-Course, IISER Pune</div>
+  </div>
+  <span class="ti-term">July 2022</span>
+</div>
+    <div class="ti" data-searchable="quantum mechanics PHY 202">
+  <div>
+    <div class="ti-course">World of Physics: Quantum Mechanics <span class="ti-note">(PHY 202)</span></div>
+    <div class="ti-role">Teaching Assistant</div>
+  </div>
+  <span class="ti-term">Spring 2020</span>
+</div>
+    <div class="ti" data-searchable="INSPIRE camp lab instructor outreach">
+  <div>
+    <div class="ti-course">Physics Lab Instructor</div>
+    <div class="ti-role">INSPIRE Camp, IISER Pune</div>
+  </div>
+  <span class="ti-term">Jan 2020</span>
+</div>
+    <div class="ti" data-searchable="BSMS second year experimental lab PHY 221">
+  <div>
+    <div class="ti-course">Experimental Lab — BSMS 2nd Year <span class="ti-note">(PHY 221)</span></div>
+    <div class="ti-role">Teaching Assistant</div>
+  </div>
+  <span class="ti-term">Fall 2019</span>
+</div>
+    <div class="ti" data-searchable="BSMS first year experimental lab PHY 121">
+  <div>
+    <div class="ti-course">Experimental Lab — BSMS 1st Year <span class="ti-note">(PHY 121)</span></div>
+    <div class="ti-role">Teaching Assistant</div>
+  </div>
+  <span class="ti-term">Spring 2019</span>
+</div>
+  </div>
+</section>
+
+<hr class="section-divider">
+<section id="contact">
+<div class="section-header"><span class="section-num">04</span><h2 class="section-title">Contact</h2><div class="section-line"></div></div>
+  <div class="contact-grid">
+    <div class="contact-block">
+      <h3>Email</h3>
+      <div class="email-list"><a class="email-link" href="mailto:arnab.laha@cern.ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>arnab.laha@cern.ch</a>
+<a class="email-link" href="mailto:alahahep@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>alahahep@gmail.com</a></div>
+      <h3 style="margin-bottom:12px;">Academic Profiles</h3>
+      <div class="social-row"><a class="pill" href="https://linkedin.com/in/arnab-laha-39844ba0" target="_blank">LinkedIn</a>
+<a class="pill" href="https://orcid.org/0000-0001-9440-7028" target="_blank">ORCID</a>
+<a class="pill" href="https://github.com/alaha999" target="_blank">GitHub</a>
+<a class="pill" href="https://gitlab.cern.ch/alaha" target="_blank">CERN GitLab</a>
+<a class="pill" href="#" onclick="openLink('https://inspirehep.net/authors/1714683','iNSPIRE HEP');return false;">iNSPIRE HEP</a></div>
+    </div>
+    <div class="contact-block">
+      <h3>Office</h3>
+      <div class="address-block"><strong>Room P232</strong><br>
+Physics Building<br>
+University of the Witwatersrand<br>
+Private Bag 3<br>
+Wits 2050, Johannesburg, South Africa</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">© 2026 Arnab Laha & Claude AI · All rights reserved</span>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="somefun.html">Some Fun</a>
+      <a href="https://github.com/alaha999/alahaweb" target="_blank">Source</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ IMAGE LIGHTBOX ═══ -->
+<div id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-nav prev"  onclick="lbNav(-1)">‹</button>
+  <button class="lb-nav next"  onclick="lbNav(+1)">›</button>
+  <div class="lb-inner">
+    <img id="lbImg" src="" alt="">
+    <div class="lb-caption" id="lbCaption"></div>
+  </div>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<!-- ═══ LINK / PDF MODAL ═══ -->
+<div id="linkModal">
+  <div class="lm-box">
+    <div class="lm-header">
+      <span class="lm-title" id="modalTitle"></span>
+      <div class="lm-actions">
+        <a class="lm-btn" id="modalOpenNew" href="#" target="_blank">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Open in new tab
+        </a>
+        <button class="lm-btn close-btn" onclick="closeLinkModal()">✕ Close</button>
+      </div>
+    </div>
+    <iframe id="modalFrame" src="" title="Content viewer"
+            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+    <div id="modalFallback" style="display:none;">
+      <p>This content cannot be displayed inline.</p>
+      <a class="pill primary" id="fallbackLink" href="#" target="_blank">Open in new tab ↗</a>
+    </div>
+  </div>
+</div>
+<script>
+/* ── Theme ── */
+const root = document.documentElement;
+let dark = localStorage.getItem('theme') === 'dark';
+function applyTheme(d) {
+  root.setAttribute('data-theme', d ? 'dark' : 'light');
+  document.getElementById('themeIcon').innerHTML = d
+    ? '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
+    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  localStorage.setItem('theme', d ? 'dark' : 'light');
+}
+applyTheme(dark);
+document.getElementById('themeBtn').onclick = () => { dark = !dark; applyTheme(dark); };
+
+/* ── Font size ── */
+let savedSize = parseInt(localStorage.getItem('fontSize') || '100');
+function applySize(v) {
+  root.style.setProperty('--fs', (v / 100) + 'rem');
+  document.getElementById('sizeVal').textContent  = v + '%';
+  document.getElementById('fontSlider').value = v;
+  localStorage.setItem('fontSize', v);
+}
+applySize(savedSize);
+document.getElementById('fontSlider').oninput = e => applySize(parseInt(e.target.value));
+document.getElementById('sizeReset').onclick  = ()  => applySize(100);
+document.getElementById('sizeBtn').onclick    = e   => {
+  e.stopPropagation();
+  document.getElementById('sizePopover').classList.toggle('open');
+};
+document.addEventListener('click', e => {
+  if (!e.target.closest('.size-wrap'))
+    document.getElementById('sizePopover').classList.remove('open');
+});
+
+/* ── Hamburger / mobile drawer ── */
+const hamburger = document.getElementById('hamburger');
+const navDrawer = document.getElementById('navDrawer');
+hamburger.onclick = () => navDrawer.classList.toggle('open');
+function closeDrawer() { navDrawer.classList.remove('open'); }
+document.addEventListener('click', e => {
+  if (!e.target.closest('nav') && !e.target.closest('.nav-drawer')) closeDrawer();
+});
+
+/* ── Link / PDF modal ── */
+function openLink(url, title) {
+  const modal    = document.getElementById('linkModal');
+  const frame    = document.getElementById('modalFrame');
+  const fallback = document.getElementById('modalFallback');
+  document.getElementById('modalTitle').textContent = title || url;
+  document.getElementById('modalOpenNew').href      = url;
+  document.getElementById('fallbackLink').href      = url;
+  frame.style.display    = 'block';
+  fallback.style.display = 'none';
+  // Use Google Docs viewer for PDFs (better cross-browser embed)
+  frame.src = url.toLowerCase().includes('.pdf')
+    ? 'https://docs.google.com/viewer?url=' + encodeURIComponent(url) + '&embedded=true'
+    : url;
+  frame.onerror = () => {
+    frame.style.display    = 'none';
+    fallback.style.display = 'flex';
+  };
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLinkModal() {
+  document.getElementById('linkModal').classList.remove('open');
+  document.getElementById('modalFrame').src = '';
+  document.body.style.overflow = '';
+}
+document.getElementById('linkModal').addEventListener('click', e => {
+  if (e.target.id === 'linkModal') closeLinkModal();
+});
+
+/* ── Lightbox ── */
+let lbImages = [], lbIdx = 0;
+
+function openLightbox(src, caption) {
+  lbImages = [{ src, caption }];
+  lbIdx = 0;
+  showLightbox();
+}
+function showLightbox() {
+  const { src, caption } = lbImages[lbIdx];
+  document.getElementById('lbImg').src            = src;
+  document.getElementById('lbCaption').textContent = caption || '';
+  document.getElementById('lbCounter').textContent =
+    lbImages.length > 1 ? `${lbIdx + 1} / ${lbImages.length}` : '';
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function lbNav(dir) {
+  lbIdx = (lbIdx + dir + lbImages.length) % lbImages.length;
+  showLightbox();
+}
+document.getElementById('lightbox').addEventListener('click', e => {
+  if (e.target.id === 'lightbox') closeLightbox();
+});
+
+/* ── Global keyboard shortcuts ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeLightbox();
+    closeLinkModal();
+    document.getElementById('sizePopover').classList.remove('open');
+  }
+  if (document.getElementById('lightbox').classList.contains('open')) {
+    if (e.key === 'ArrowRight') lbNav(+1);
+    if (e.key === 'ArrowLeft')  lbNav(-1);
+  }
+  // Ctrl/Cmd+K → focus search
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    try { document.getElementById('navSearch').focus(); } catch (_) {}
+  }
+});
+</script>
+<script>
+// ── Physics gallery lightbox wiring ──
+document.querySelectorAll('#physicsGallery .gallery-thumb').forEach((el, i) => {
+  el.onclick = () => {
+    const thumbs = Array.from(document.querySelectorAll('#physicsGallery .gallery-thumb'));
+    lbImages = thumbs.map(t => ({ src: t.dataset.src, caption: t.dataset.caption }));
+    lbIdx = i;
+    showLightbox();
+  };
+});
+
+// ── In-page search ──
+const searchInput   = document.getElementById('navSearch');
+const searchResults = document.getElementById('searchResults');
+
+function buildSearchIndex() {
+  const items = [];
+  document.querySelectorAll('[data-searchable]').forEach(el => {
+    const titleEl = el.querySelector('.rc-title, .pub-title, .ti-course, .section-title');
+    const title   = titleEl?.textContent?.trim();
+    if (!title) return;
+    items.push({
+      el,
+      title:   title.substring(0, 80),
+      text:    (el.getAttribute('data-searchable') + ' ' + el.textContent).toLowerCase(),
+      section: el.closest('section')?.id || 'page',
+    });
+  });
+  return items;
+}
+
+let searchIndex = null;
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if (!q) { searchResults.style.display = 'none'; return; }
+  if (!searchIndex) searchIndex = buildSearchIndex();
+
+  const esc_re = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re     = new RegExp('(' + esc_re + ')', 'gi');
+  const hits   = searchIndex.filter(i => i.text.includes(q) || i.title.toLowerCase().includes(q)).slice(0, 8);
+
+  searchResults.innerHTML = hits.length
+    ? hits.map((h, i) =>
+        `<div class="sr-item" data-idx="${i}">
+           <div class="sr-title">${h.title.replace(re, '<mark>$1</mark>')}</div>
+           <div class="sr-section">${h.section}</div>
+         </div>`
+      ).join('')
+    : '<div class="sr-empty">No results found</div>';
+
+  searchResults.querySelectorAll('.sr-item').forEach((el, i) => {
+    if (i < hits.length) el.onclick = () => {
+      searchResults.style.display = 'none';
+      searchInput.value = '';
+      hits[i].el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      hits[i].el.classList.add('search-highlight');
+      setTimeout(() => hits[i].el.classList.remove('search-highlight'), 2500);
+    };
+  });
+  searchResults.style.display = 'block';
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.nav-search-wrap') && !e.target.closest('#searchResults'))
+    searchResults.style.display = 'none';
+});
+
+// ── Active nav highlight on scroll ──
+const sections = document.querySelectorAll('section[id]');
+const navLinks  = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 90) current = s.id; });
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+}, { passive: true });
+</script>
 </body>
 </html>

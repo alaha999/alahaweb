@@ -1,0 +1,305 @@
+# ═══════════════════════════════════════════════════════════════
+# config.yaml — Arnab Laha Personal Website
+# Edit this file and run: python build_site.py
+# ═══════════════════════════════════════════════════════════════
+
+site:
+  title: "Arnab Laha - HEP ML"
+  author: "Arnab Laha"
+  copyright_year: "2026"
+  github_repo: "https://github.com/alaha999/alahaweb"
+
+# ── PERSONAL INFO ──────────────────────────────────────────────
+person:
+  name: "Arnab Laha"
+  title: "Postdoctoral Researcher"
+  institution: "University of the Witwatersrand, Johannesburg, SA"
+  group: "ATLAS Collaboration, CERN"
+  field: "Experimental High Energy Physics | ML | Data Science"
+  photo: "images/ProfilePic.jpg"          # path relative to HTML files
+  photo_caption: "Arnab Laha · Wits University"
+  advisor_name: "Prof. Sourabh Dube"
+  advisor_url: "http://sites.iiserpune.ac.in/~sdube/"
+  cv: "images/CV.pdf"
+
+  bio: |
+    I am currently working as a postdoctoral researcher at the University of the Witwatersrand,
+    Johannesburg, South Africa. I work on the ATLAS experiment at CERN. My current research
+    focuses on Dark Sector searches and the Calorimeter Fast Simulation pipeline for the ATLAS detector.
+    <br><br>
+    I obtained my Ph.D. in Experimental High Energy Physics from IISER Pune, India, under the supervision
+    of <a href="{advisor_url}" target="_blank">{advisor_name}</a>. My doctoral
+    research focused on searches for physics beyond the Standard Model (BSM) in
+    multilepton final states using at the CMS experiment at CERN.
+    In addition to physics analyses, I contributed to the development and improvement
+    of CMS tracking software in preparation for the High-Luminosity LHC upgrade.
+    <br><br>
+    Outside physics, I am an amateur photographer, a keen motorbike rider, and a
+    passionate football fan of Argentina and Barcelona.
+
+# ── LINKS / PILLS ──────────────────────────────────────────────
+links:
+  - label: "Curriculum Vitae"
+    url: "images/CV.pdf"
+    modal: true          # open in popup modal
+    primary: true
+    icon: "pdf"
+  - label: "iNSPIRE HEP"
+    url: "https://inspirehep.net/authors/1714683"
+    modal: true
+    icon: "search"
+  - label: "GitHub"
+    url: "https://github.com/alaha999"
+    modal: false
+    icon: "github"
+  - label: "ORCID"
+    url: "https://orcid.org/0000-0001-9440-7028"
+    modal: false
+  - label: "GitLab"
+    url: "https://gitlab.cern.ch/alaha"
+    modal: false
+  - label: "PhD Thesis"
+    url: "https://drive.google.com/file/d/1AzsnFCbZDmB5UJWRlkYxkb5aXdmppwjs/view?usp=sharing"
+    modal: false
+
+# ── PHYSICS GALLERY STRIP (hero section) ───────────────────────
+physics_images:
+  - src: "images/White_emt.png"
+    caption: "CMS recorded event with electron, muon and tau lepton (used in our analysis)"
+    preview: "CMS: e, μ, τ event"
+  - src: "images/CMS_tracker.jpg"
+    caption: "CMS Silicon Tracker — the largest silicon detector ever built"
+    preview: "CMS Silicon Tracker"
+  - src: "images/run3_13.6TeV_1.png"
+    caption: "First proton–proton collision at √s = 13.6 TeV recorded by CMS (2022)"
+    preview: "First pp @ 13.6 TeV"
+  - src: "images/ParticleTimelineATLAS.png"
+    caption: "Discovery timeline of fundamental particles — credit: ATLAS Collaboration"
+    preview: "Particle timeline (ATLAS)"
+
+# ── RESEARCH ───────────────────────────────────────────────────
+research:
+  - tag: "BSM Search"
+    title: "Search for Beyond Standard Model Signatures"
+    body: |
+      Searches for BSM phenomena in multilepton final states, model-independently
+      and/or targeting specific models: Vector-like leptons, seesaw mechanisms, and
+      leptoquarks. Machine learning to enhance search sensitivity. Currently working
+      on searches exploring Dark Sector models in the ATLAS experiment. Designing
+      a cut-based strategy for emerging jets search using Full Run 3 ATLAS dataset.
+    keywords: "BSM multilepton VLLs seesaw leptoquark ML Dark Sector"
+
+  - tag: "CMS Simulation · HL-LHC"
+    title: "Phase 2 Tracking in CMS Fast Simulation"
+    body: |
+      Implementation of the Phase 2 tracker geometry and tracking in the CMS
+      Fast Simulation package for the HL-LHC upgrade, enabling faster Monte Carlo
+      event generation for HL-LHC physics studies.
+    keywords: "phase 2 tracker CMS fast simulation HL-LHC Monte Carlo"
+    
+  - tag: "ATLAS Simulation · HL-LHC"
+    title: "Fast Calorimetry for Long Lived Particles"
+    body: |      
+      Working on ATLAS Fast Calorimeter simulation software (AF3) to implement
+      fast reconstruction of long-lived particles in the ATLAS calorimeter.
+    keywords: "HL-LHC ATLAS Fast Calorimetry MC Simulation LLP"
+
+  - tag: "Machine Learning"
+    title: "Latent Space Representation of HEP Data"
+    body: |
+      Investigating hidden patterns in multidimensional HEP data using PCA, UMAP,
+      and Autoencoders for lepton classification on CERN Open Data. Also uses GANs
+      to speed up W+jets and Z+jets event simulation at LHC.
+    keywords: "PCA UMAP autoencoder GAN latent space lepton classification"
+
+  - tag: "CMS Service Work"
+    title: "B-Tagging Contact, CMS EXOTICA Group"
+    body: |
+      Reviewing heavy flavor tagging usage in CMS EXOTICA analyses and supporting
+      analyzers with b-tagging tool implementation in liaison with the CMS b-tagging
+      object group. Over 40 analyses reviewed.
+    keywords: "b-tagging EXOTICA heavy flavor CMS service"
+
+# ── PUBLICATIONS ───────────────────────────────────────────────
+publications:
+  - year: "Ongoing"
+    title: "Search for first- and second-generation VLLs using full Run 2 + partial Run 3 data at CMS"
+    journal: "Review stage in collaboration. I participated in the working phase of this analysis with two main analysts from IISER group."
+    url: null
+    badge: null
+    keywords: "Vector-like electron muon CMS Run 2 Run 3"
+
+  - year: "prep"
+    title: "Constraining Vector-like electron, muon and tau models reinterpreting ATLAS √s = 8 TeV multilepton search"
+    journal: "Manuscript in preparation"
+    url: null
+    badge: null
+    keywords: "Vector-like electron muon tau ATLAS 8 TeV"
+
+  - year: "2024"
+    title: "Review of searches for vector-like quarks, vector-like leptons, and heavy neutral leptons in pp collisions at √s = 13 TeV at CMS"
+    journal: "The CMS Collaboration"
+    url: "https://arxiv.org/abs/2405.17605"
+    badge: "CMS-EXO-23-006"
+    modal: true
+    keywords: "vector-like quarks leptons heavy neutral 13 TeV EXO-23-006"
+
+  - year: "2022"
+    title: "Search for dilepton resonances from decays of (pseudo)scalar bosons produced in association with a massive vector boson or tt̄ pair at √s = 13 TeV"
+    journal: "The CMS Collaboration"
+    url: "http://cds.cern.ch/record/2815307"
+    badge: "CMS-PAS-EXO-21-018"
+    modal: true
+    keywords: "dilepton resonances pseudoscalar top quark 13 TeV EXO-21-018"
+
+  - year: "2022"
+    title: "Inclusive nonresonant multilepton probes of new phenomena at √s = 13 TeV"
+    journal: "The CMS Collaboration · Physical Review D"
+    url: "https://doi.org/10.1103/PhysRevD.105.112007"
+    badge: "Phys. Rev. D 105, 112007"
+    modal: true
+    keywords: "nonresonant multilepton new phenomena Physical Review D"
+
+inspire_url: "https://inspirehep.net/authors/1714683"
+
+# ── TEACHING ───────────────────────────────────────────────────
+teaching:
+  - course: "Machine Learning and its Physics Application"
+    code: "PH6232"
+    role: "Teaching Assistant (co-instructor)"
+    link_label: "Course GitHub"
+    link_url: "https://alaha999.github.io/"
+    link_modal: true
+    term: "Spring 2023"
+    keywords: "machine learning physics PH6232"
+
+  - course: "Lectures on Feynman Diagrams"
+    code: null
+    role: "EHEP Mini-Course, IISER Pune"
+    link_label: null
+    link_url: null
+    link_modal: false
+    term: "July 2022"
+    keywords: "Feynman diagrams EHEP mini course"
+
+  - course: "World of Physics: Quantum Mechanics"
+    code: "PHY 202"
+    role: "Teaching Assistant"
+    link_label: null
+    link_url: null
+    link_modal: false
+    term: "Spring 2020"
+    keywords: "quantum mechanics PHY 202"
+
+  - course: "Physics Lab Instructor"
+    code: null
+    role: "INSPIRE Camp, IISER Pune"
+    link_label: null
+    link_url: null
+    link_modal: false
+    term: "Jan 2020"
+    keywords: "INSPIRE camp lab instructor outreach"
+
+  - course: "Experimental Lab — BSMS 2nd Year"
+    code: "PHY 221"
+    role: "Teaching Assistant"
+    link_label: null
+    link_url: null
+    link_modal: false
+    term: "Fall 2019"
+    keywords: "BSMS second year experimental lab PHY 221"
+
+  - course: "Experimental Lab — BSMS 1st Year"
+    code: "PHY 121"
+    role: "Teaching Assistant"
+    link_label: null
+    link_url: null
+    link_modal: false
+    term: "Spring 2019"
+    keywords: "BSMS first year experimental lab PHY 121"
+
+# ── CONTACT ────────────────────────────────────────────────────
+contact:
+  emails:
+    - "arnab.laha@cern.ch"
+    - "alahahep@gmail.com"
+
+  social:
+    - label: "LinkedIn"
+      url: "https://linkedin.com/in/arnab-laha-39844ba0"
+      modal: false
+    - label: "ORCID"
+      url: "https://orcid.org/0000-0001-9440-7028"
+      modal: false
+    - label: "GitHub"
+      url: "https://github.com/alaha999"
+      modal: false
+    - label: "CERN GitLab"
+      url: "https://gitlab.cern.ch/alaha"
+      modal: false
+    - label: "iNSPIRE HEP"
+      url: "https://inspirehep.net/authors/1714683"
+      modal: true
+
+  office:
+    room: "Room P232"
+    building: "Physics Building"
+    institution: "University of the Witwatersrand"
+    street: "Private Bag 3"
+    city: "Wits 2050, Johannesburg, South Africa"
+
+# ── GALLERY PAGE ───────────────────────────────────────────────
+gallery:
+  description: "A collection of photos from my research life — detector halls, conferences, collaborations, and moments at CERN and IISER Pune."
+  categories:
+    - "all"
+    - "cern"
+    - "iiser"
+    - "conference"
+    - "detector"
+    - "misc"
+
+  photos:
+    - src: "images/White_emt.png"
+      caption: "CMS recorded event with an electron, muon and tau lepton — this event topology is at the heart of our multilepton BSM search."
+      tag: " cern detector"
+    - src: "images/CMS_tracker.jpg"
+      caption: "The CMS Silicon Tracker — the world's largest silicon particle detector, at CERN's LHC."
+      tag: "cern detector"
+    - src: "images/run3_13.6TeV_1.png"
+      caption: "First proton–proton collision at √s = 13.6 TeV recorded by CMS (2022), marking the start of Run 3."
+      tag: "cern detector"
+    - src: "images/ParticleTimelineATLAS.png"
+      caption: "Discovery timeline of fundamental particles from the electron (1897) to the Higgs boson (2012). Credit: ATLAS."
+      tag: "misc"
+    - src: "https://media.licdn.com/dms/image/v2/D4D2DAQHE0Chi2KJ3Rw/profile-treasury-image-shrink_1280_1280/B4DZgZSmpyHAAU-/0/1752770969805?e=1772319600&v=beta&t=hPExH9agcPGTIZJZOX1BNAape0ZPLXsXQKg_f8RVGfw"
+      caption: "Arnab after his PhD defense on 16th July, 2025."
+      tag: "iiser"
+      
+    # Add more photos:
+    # - src: "images/your-photo.jpg"
+    #   caption: "Your caption here."
+    #   tag: "cern"   # must match a category above
+
+# ── SOMEFUN PAGE ───────────────────────────────────────────────
+somefun:
+  intro: |
+    Some fun stuffs I do beyond the lab or in weekend. I will share ML or physics resources, and
+    blog posts that I find insightful in this space.
+
+  photography:
+    blog_name: "Overwritten Memories"
+    blog_url: "https://alaha999.github.io/OverwrittenMemories/index.html"
+    description: |
+      Photography is how I slow down. I'm drawn to the textures of everyday life — market mornings,
+      monsoon light on old walls, faces in transit, the western ghats at dusk. Most of it is shot on
+      rides or walks, phone in hand, no particular agenda.
+      
+  funWithAI:
+    blog_name: "Latex Equation Studio"
+    blog_url: "https://alaha999.github.io/latex-equation-studio/"
+    description: |
+      I have to put equations in my presentations on a regular basis to explain my research.
+      I made this latex equation editor using Claude AI to help me import high quality PNG images
+      of equations for my presentations. This is hosted as a github page. So, enjoy and have some fun
+      time there! :)

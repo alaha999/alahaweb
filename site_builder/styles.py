@@ -1,12 +1,23 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gallery — Arnab Laha</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-<style>
+"""
+site_builder/styles.py
+======================
+Static string constants that are injected verbatim into every generated page:
+
+    SHARED_CSS       — full CSS (design tokens, light/dark, layout, components)
+    NAV_CONTROLS     — the right-side nav cluster (search, size slider, dark-mode btn, hamburger)
+    MODAL_HTML       — lightbox + link/PDF modal markup
+    SHARED_JS        — theme toggle, font slider, hamburger, openLink, lightbox functions
+    HTML_HEAD        — <html>…<body> opening template (accepts .format(title=, css=))
+
+These are intentionally kept as plain strings so they can also be read from
+external .css / .js files in the future without changing any other module.
+"""
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DESIGN SYSTEM + ALL SHARED CSS
+# ─────────────────────────────────────────────────────────────────────────────
+
+SHARED_CSS = """<style>
 /* ── Design tokens ── */
 :root {
   --bg:#f7f6f3; --bg2:#eeecea; --surface:#ffffff; --surface2:#f2f0ed;
@@ -315,103 +326,15 @@ footer { background:var(--bg2); border-top:1px solid var(--border); padding:20px
   .lm-box       { width:98vw; height:92vh; }
   .lb-nav       { display:none; }
 }
-</style>
-</head>
-<body>
-<style>
-/* ── Page header ── */
-.page-header {
-  max-width:var(--max); margin:0 auto; padding:44px 18px 0;
-  animation:fade-up .5s ease both;
-}
-.page-eyebrow {
-  font-family:var(--mono); font-size:.7rem; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--accent-mid);
-  margin-bottom:10px; display:flex; align-items:center; gap:10px;
-}
-.page-eyebrow::before { content:''; display:block; width:24px; height:1px; background:var(--accent-mid); }
-.page-title { font-family:var(--serif); font-size:2.2rem; font-weight:400; color:var(--text); letter-spacing:-.01em; margin-bottom:10px; }
-.page-desc  { font-size:.95rem; color:var(--text-muted); max-width:540px; line-height:1.75; margin-bottom:28px; }
+</style>"""
 
-/* ── Filter bar ── */
-.filter-bar {
-  max-width:var(--max); margin:0 auto; padding:0 18px 20px;
-  display:flex; gap:6px; flex-wrap:wrap;
-}
-.filter-btn {
-  font-family:var(--mono); font-size:.68rem; letter-spacing:.06em;
-  text-transform:uppercase; padding:5px 14px; border-radius:100px;
-  border:1px solid var(--border2); background:var(--surface);
-  color:var(--text-muted); cursor:pointer; transition:all .15s;
-}
-.filter-btn:hover, .filter-btn.active {
-  border-color:var(--accent); color:var(--accent); background:var(--accent-light);
-}
 
-/* ── Gallery grid ── */
-.gallery-grid {
-  max-width:var(--max); margin:0 auto; padding:0 18px 52px;
-  display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
-}
-.gcard {
-  border-radius:8px; overflow:hidden;
-  background:var(--surface); border:1px solid var(--border);
-  cursor:pointer; position:relative;
-  transition:box-shadow .2s, transform .2s;
-  animation:fade-up .4s ease both;
-}
-.gcard:hover { box-shadow:var(--shadow-lg); transform:translateY(-3px); }
-.gcard-img   { aspect-ratio:4/3; overflow:hidden; background:var(--bg2); }
-.gcard-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s; }
-.gcard:hover .gcard-img img { transform:scale(1.04); }
-.gcard-body  { padding:11px 14px 13px; }
-.gcard-caption { font-size:.85rem; color:var(--text); line-height:1.5; margin-bottom:3px; }
-.gcard-tag {
-  font-family:var(--mono); font-size:.62rem;
-  letter-spacing:.06em; text-transform:uppercase; color:var(--text-dim);
-}
-.gcard-overlay {
-  position:absolute; inset:0;
-  display:flex; align-items:center; justify-content:center;
-  background:rgba(0,0,0,.3); opacity:0; transition:opacity .2s;
-}
-.gcard:hover .gcard-overlay { opacity:1; }
-.gcard-overlay svg { color:white; width:28px; height:28px; }
+# ─────────────────────────────────────────────────────────────────────────────
+# NAV RIGHT-SIDE CONTROLS (search bar + size popover + theme button + hamburger)
+# Inserted once into every <nav> element.
+# ─────────────────────────────────────────────────────────────────────────────
 
-/* ── Placeholder card ── */
-.gcard-placeholder {
-  border:2px dashed var(--border2); background:transparent;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  min-height:180px; color:var(--text-dim); gap:10px; cursor:default;
-}
-.gcard-placeholder:hover { transform:none; box-shadow:none; }
-.gcard-placeholder svg  { width:28px; height:28px; opacity:.4; }
-.gcard-placeholder span {
-  font-family:var(--mono); font-size:.65rem; letter-spacing:.06em;
-  text-transform:uppercase; text-align:center; opacity:.5; padding:0 20px;
-}
-
-/* ── Responsive ── */
-@media (max-width:760px) {
-  .nav-links     { display:none; }
-  .nav-hamburger { display:flex; }
-  .gallery-grid  { grid-template-columns:repeat(2,1fr); }
-  .lb-nav        { display:none; }
-}
-@media (max-width:480px) { .gallery-grid { grid-template-columns:1fr; } }
-</style>
-<nav>
-  <a class="nav-name" href="index.html">Arnab Laha</a>
-  <ul class="nav-links">
-    <li><a href="index.html#research">Research</a></li>
-    <li><a href="index.html#publications">Publications</a></li>
-    <li><a href="index.html#teaching">Teaching</a></li>
-    <li><a href="index.html#contact">Contact</a></li>
-    <li><a href="gallery.html" class="active">Gallery</a></li>
-    <li><a href="somefun.html">Some Fun</a></li>
-  </ul>
-
+NAV_CONTROLS = """
   <div class="nav-spacer"></div>
 
   <!-- Search -->
@@ -456,89 +379,14 @@ footer { background:var(--bg2); border-top:1px solid var(--border); padding:20px
   <!-- Mobile hamburger -->
   <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
     <span></span><span></span><span></span>
-  </button>
-</nav>
+  </button>"""
 
-<div class="nav-drawer" id="navDrawer">
-  <a href="index.html#research" onclick="closeDrawer()">Research</a>
-  <a href="index.html#publications" onclick="closeDrawer()">Publications</a>
-  <a href="index.html#teaching" onclick="closeDrawer()">Teaching</a>
-  <a href="index.html#contact" onclick="closeDrawer()">Contact</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="somefun.html">Some Fun</a>
-</div>
 
-<div class="page-header">
-  <div class="page-eyebrow">Academic &amp; Field Photos</div>
-  <h1 class="page-title">Gallery</h1>
-  <p class="page-desc">A collection of photos from my research life — detector halls, conferences, collaborations, and moments at CERN and IISER Pune.</p>
-</div>
+# ─────────────────────────────────────────────────────────────────────────────
+# LIGHTBOX + LINK/PDF MODAL  (HTML only; JS lives in SHARED_JS)
+# ─────────────────────────────────────────────────────────────────────────────
 
-<div class="filter-bar"><button class="filter-btn active" data-filter="all">All</button>
-<button class="filter-btn" data-filter="cern">Cern</button>
-<button class="filter-btn" data-filter="iiser">Iiser</button>
-<button class="filter-btn" data-filter="conference">Conference</button>
-<button class="filter-btn" data-filter="detector">Detector</button>
-<button class="filter-btn" data-filter="misc">Misc</button>
-</div>
-
-<div class="gallery-grid" id="galleryGrid"><div class="gcard" data-src="images/White_emt.png" data-caption="CMS recorded event with an electron, muon and tau lepton — this event topology is at the heart of our multilepton BSM search." data-tag=" cern detector">
-  <div class="gcard-img"><img src="images/White_emt.png" alt="CMS recorded event with an electron, muo" loading="lazy" onerror="this.parentElement.style.background='var(--bg2)'"></div>
-  <div class="gcard-body">
-    <div class="gcard-caption">CMS recorded event with an electron, muon and tau lepton — this event topology is at the heart of our multilepton BSM search.</div>
-    <div class="gcard-tag"> cern detector</div>
-  </div>
-  <div class="gcard-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
-</div>
-<div class="gcard" data-src="images/CMS_tracker.jpg" data-caption="The CMS Silicon Tracker — the world&#39;s largest silicon particle detector, at CERN&#39;s LHC." data-tag="cern detector">
-  <div class="gcard-img"><img src="images/CMS_tracker.jpg" alt="The CMS Silicon Tracker — the world&#39;" loading="lazy" onerror="this.parentElement.style.background='var(--bg2)'"></div>
-  <div class="gcard-body">
-    <div class="gcard-caption">The CMS Silicon Tracker — the world&#39;s largest silicon particle detector, at CERN&#39;s LHC.</div>
-    <div class="gcard-tag">cern detector</div>
-  </div>
-  <div class="gcard-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
-</div>
-<div class="gcard" data-src="images/run3_13.6TeV_1.png" data-caption="First proton–proton collision at √s = 13.6 TeV recorded by CMS (2022), marking the start of Run 3." data-tag="cern detector">
-  <div class="gcard-img"><img src="images/run3_13.6TeV_1.png" alt="First proton–proton collision at √s = 13" loading="lazy" onerror="this.parentElement.style.background='var(--bg2)'"></div>
-  <div class="gcard-body">
-    <div class="gcard-caption">First proton–proton collision at √s = 13.6 TeV recorded by CMS (2022), marking the start of Run 3.</div>
-    <div class="gcard-tag">cern detector</div>
-  </div>
-  <div class="gcard-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
-</div>
-<div class="gcard" data-src="images/ParticleTimelineATLAS.png" data-caption="Discovery timeline of fundamental particles from the electron (1897) to the Higgs boson (2012). Credit: ATLAS." data-tag="misc">
-  <div class="gcard-img"><img src="images/ParticleTimelineATLAS.png" alt="Discovery timeline of fundamental partic" loading="lazy" onerror="this.parentElement.style.background='var(--bg2)'"></div>
-  <div class="gcard-body">
-    <div class="gcard-caption">Discovery timeline of fundamental particles from the electron (1897) to the Higgs boson (2012). Credit: ATLAS.</div>
-    <div class="gcard-tag">misc</div>
-  </div>
-  <div class="gcard-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
-</div>
-<div class="gcard" data-src="https://media.licdn.com/dms/image/v2/D4D2DAQHE0Chi2KJ3Rw/profile-treasury-image-shrink_1280_1280/B4DZgZSmpyHAAU-/0/1752770969805?e=1772319600&amp;v=beta&amp;t=hPExH9agcPGTIZJZOX1BNAape0ZPLXsXQKg_f8RVGfw" data-caption="Arnab after his PhD defense on 16th July, 2025." data-tag="iiser">
-  <div class="gcard-img"><img src="https://media.licdn.com/dms/image/v2/D4D2DAQHE0Chi2KJ3Rw/profile-treasury-image-shrink_1280_1280/B4DZgZSmpyHAAU-/0/1752770969805?e=1772319600&amp;v=beta&amp;t=hPExH9agcPGTIZJZOX1BNAape0ZPLXsXQKg_f8RVGfw" alt="Arnab after his PhD defense on 16th July" loading="lazy" onerror="this.parentElement.style.background='var(--bg2)'"></div>
-  <div class="gcard-body">
-    <div class="gcard-caption">Arnab after his PhD defense on 16th July, 2025.</div>
-    <div class="gcard-tag">iiser</div>
-  </div>
-  <div class="gcard-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
-</div>
-<div class="gcard gcard-placeholder">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-  <span>Add photos in config.yaml</span>
-</div></div>
-
-<footer>
-  <div class="footer-inner">
-    <span class="footer-copy">© 2026 Arnab Laha & Claude AI · All rights reserved</span>
-    <div class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="somefun.html">Some Fun</a>
-      <a href="https://github.com/alaha999/alahaweb" target="_blank">Source</a>
-    </div>
-  </div>
-</footer>
-
+MODAL_HTML = """
 <!-- ═══ IMAGE LIGHTBOX ═══ -->
 <div id="lightbox">
   <button class="lb-close" onclick="closeLightbox()">✕</button>
@@ -576,8 +424,15 @@ footer { background:var(--bg2); border-top:1px solid var(--border); padding:20px
       <a class="pill primary" id="fallbackLink" href="#" target="_blank">Open in new tab ↗</a>
     </div>
   </div>
-</div>
-<script>
+</div>"""
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SHARED JAVASCRIPT  (theme, font-size, hamburger, lightbox, link modal)
+# Injected once at the bottom of every page just before </body>.
+# ─────────────────────────────────────────────────────────────────────────────
+
+SHARED_JS = """<script>
 /* ── Theme ── */
 const root = document.documentElement;
 let dark = localStorage.getItem('theme') === 'dark';
@@ -696,36 +551,22 @@ document.addEventListener('keydown', e => {
     try { document.getElementById('navSearch').focus(); } catch (_) {}
   }
 });
-</script>
-<script>
-// ── Filter ──
-const galleryCards = Array.from(
-  document.querySelectorAll('.gallery-grid .gcard:not(.gcard-placeholder)')
-);
+</script>"""
 
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const f = btn.dataset.filter;
-    galleryCards.forEach(c => {
-      c.style.display = (f === 'all' || c.dataset.tag.toLowerCase().includes(f)) ? '' : 'none';
-    });
-  };
-});
 
-// ── Lightbox wiring ──
-galleryCards.forEach((card, i) => {
-  // Stagger entrance animation
-  card.style.animationDelay = (i * 0.05) + 's';
+# ─────────────────────────────────────────────────────────────────────────────
+# PAGE OPENING TEMPLATE
+# ─────────────────────────────────────────────────────────────────────────────
 
-  card.onclick = () => {
-    const visible = galleryCards.filter(c => c.style.display !== 'none');
-    lbImages = visible.map(c => ({ src: c.dataset.src, caption: c.dataset.caption }));
-    lbIdx    = Math.max(0, visible.indexOf(card));
-    showLightbox();
-  };
-});
-</script>
-</body>
-</html>
+HTML_HEAD = """\
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+{css}
+</head>
+<body>"""
