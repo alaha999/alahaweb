@@ -39,11 +39,16 @@ person:
 
 # ── LINKS / PILLS ──────────────────────────────────────────────
 links:
-  - label: "Curriculum Vitae"
+  - label: "CV"
     url: "images/CV.pdf"
     modal: true          # open in popup modal
     primary: true
     icon: "pdf"
+  - label: "Industry CV"
+    url: "images/AL_IndCV.pdf"
+    modal: true          # open in popup modal
+    primary: false
+    icon: "pdf"    
   - label: "iNSPIRE HEP"
     url: "https://inspirehep.net/authors/1714683"
     modal: true
@@ -54,9 +59,6 @@ links:
     icon: "github"
   - label: "ORCID"
     url: "https://orcid.org/0000-0001-9440-7028"
-    modal: false
-  - label: "GitLab"
-    url: "https://gitlab.cern.ch/alaha"
     modal: false
   - label: "PhD Thesis"
     url: "https://drive.google.com/file/d/1AzsnFCbZDmB5UJWRlkYxkb5aXdmppwjs/view?usp=sharing"
