@@ -289,19 +289,40 @@ somefun:
     Some fun stuffs I do beyond the lab or in weekend. I will share ML or physics resources, and
     blog posts that I find insightful in this space.
 
-  photography:
-    blog_name: "Overwritten Memories"
-    blog_url: "https://alaha999.github.io/OverwrittenMemories/index.html"
-    description: |
-      Photography is how I slow down. I'm drawn to the textures of everyday life — market mornings,
-      monsoon light on old walls, faces in transit, the western ghats at dusk. Most of it is shot on
-      rides or walks, phone in hand, no particular agenda.
+  sections:
+    # ── blog-box ──────────────────────────────────────────────────────────
+    # External link card. Use for photo blogs, galleries, or any URL.
+    
+    - title:       "Photography"
+      type:        blog-box
+      collapsed:   false
+      blog_name:   "Overwritten Memories"
+      blog_url:    "https://alaha999.github.io/OverwrittenMemories/index.html"
+      description: >        
+        Photography is how I slow down. I'm drawn to the textures of everyday life — market mornings,
+        monsoon light on old walls, faces in transit, the western ghats at dusk. Most of it is shot on
+        rides or walks, phone in hand, no particular agenda.
+
+    - title:       "Fun With AI"
+      type:        blog-box
+      collapsed:   false
+      blog_name:   "Latex Equation Studio"
+      blog_url:    "https://alaha999.github.io/latex-equation-studio/"
+      description: >        
+        I have to put equations in my presentations on a regular basis to explain my research.
+        I made this latex equation editor using Claude AI to help me import high quality PNG images
+        of equations for my presentations. This is hosted as a github page. So, enjoy and have some fun
+        time there! :)
+
       
-  funWithAI:
-    blog_name: "Latex Equation Studio"
-    blog_url: "https://alaha999.github.io/latex-equation-studio/"
-    description: |
-      I have to put equations in my presentations on a regular basis to explain my research.
-      I made this latex equation editor using Claude AI to help me import high quality PNG images
-      of equations for my presentations. This is hosted as a github page. So, enjoy and have some fun
-      time there! :)
+# ── blog-text ─────────────────────────────────────────────────────────
+    # Shows a short description on your site.
+    # The "Read on GitHub →" link points straight to the .md file on GitHub
+    
+    - title:       "Machine learning course"
+      type:        blog-text
+      collapsed:   true
+      description: >
+        Modular course at IISER Pune in 2023 on the Machine Learning and its physics applications (PHY6232)
+        
+      github_url:  "https://github.com/alaha999/MLPhyCourse"
